@@ -1,7 +1,7 @@
 # TESS -> TRANS
 # Sample:
 # x = langTrans()
-# print(x.langTrans['afr']) -> returns ar
+# print(x.dict['afr']) -> returns ar
 class langTrans:
 	def __init__(self):	
 		self.dict = {

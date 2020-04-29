@@ -1,3 +1,13 @@
+# Diana Danvers
+# Translator class for 205 Final Project: Enuncreate
+# Object created detects the language passed into it and translate it 
+# into English or a chosen language. Languages are chosen from the langTrans
+# 
+# Sample - Spanish and English
+# x = transClass()
+# print(x.transChoose("Hello World", "es") -> Hola Mundo 
+# print(x.transEN("Hola Mundo") -> Hello World
+
 import googletrans
 from googletrans import Translator
 from dict import langTrans
@@ -19,16 +29,14 @@ class transClass:
 		self.destText = ""
 		self.howToD = ""
 
-
-		self.test = ""
-
 	# Detect Language
 	def detectLang(self, text):
+		self.srcText = text
 		self.src = self.translator.detect(self.srcText).lang
 		self.srcLang = self.langDict[self.src].title()
-		self.srcText = text
 		self.howToS = self.pronounce(self.srcText, self.src)
 
+	# Attempt to get pronounciation: May not always be available
 	def pronounce(self, text, language):
 		pronunce = self.translator.translate(text, dest=language).pronunciation
 		if(pronunce == "" or pronunce == None):
@@ -41,7 +49,6 @@ class transClass:
 		self.detectLang(text)
 		self.dest = "en"
 		self.translate()
-		return self.srcText
 
 	# Translate: From [Detect Language] to [Choose Language]
 	def transChoose(self, text, langDest):
@@ -52,26 +59,30 @@ class transClass:
 			self.dest = langDest
 		
 		self.translate()
-		return self.srcText
-
+	
+	# Actual translation
 	def translate(self):
 		self.destLang = self.langDict[self.dest].title()
 		self.destText = self.translator.translate(self.srcText, dest=self.dest).text
 		self.howToD = self.pronounce(self.destText, self.dest)
 	
+	# Send language code across libraries
 	def tesTOtra(self, langDest):
-		return self.langTrans.dict[langDest]
+		self.langTrans.dict[langDest]
 
+	# Output all data
 	def report(self):
-		print(self.src)
-		print(self.srcLang)
-		print(self.srcText)
-		print(self.howToS)
-		print(self.dest)
-		print(self.destLang)
-		print(self.destText)
-		print(self.howToD)
+		print("Source LanCode: " + self.src)
+		print("Source Language: " + self.srcLang)
+		print("Source Text: " + self.srcText)
+		print("Source Pronunciation: " + self.howToS)
+		print("Dest LangCode: " + self.dest)
+		print("Dest Language: " + self.destLang)
+		print("Dest Text: " + self.destText)
+		print("Dest Pronunciation: " + self.howToD)
 	
+	# Helper function for all codes TODO Use for wheel
 	def langCodes(self):
 		for i in self.langDict:
 			print(i + ": " + self.langDict[i].title())
+
