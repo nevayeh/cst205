@@ -118,11 +118,13 @@ class Window(QWidget):
 
 	@pyqtSlot()
 	def go(self):
+		self.go_button.setDisabled(True)
 		text = self.text_area.toPlainText()
 		self.dev_results.setText(self.text_area.toPlainText())
 		voice = voice_engine()
 		voice.start(text)
 		del(voice)
+		self.go_button.setDisabled(False)
 
 	@pyqtSlot()
 	def dev_clear(self):
