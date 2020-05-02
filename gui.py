@@ -133,7 +133,6 @@ class Window(QWidget):
 		#self.setWindowIcon(QIcon("<IMAGE FILE PATH>")) # Custom window icon (next to window title)
 
 	def translate(self):
-		print(self.options_language_box.currentText())
 		self.langInput = self.options_language_box.currentText()
 		for langCode, langWord in self.langList.items():
 			if(langWord.title() == self.langInput):
