@@ -5,14 +5,11 @@ from PyQt5.QtCore import pyqtSlot
 #from PyQt5.QtGui import QPixmap, QIcon # not necessary (for now)
 #from PIL import Image #not necessary (for now)
 import sys
-
-from translate import transClass
-
+from voice_engine import voice_engine
 
 class Window(QWidget):
 	def __init__(self):
 		super().__init__()
-	
 		# ------------------------------------
 		#   GENERAL VARIABLE INITIALIZATION
 		# ------------------------------------
@@ -25,9 +22,6 @@ class Window(QWidget):
 		self.dev_title_label_text = "[TEMP] Developer Panel"
 		self.dev_results_label_text = "Results:"
 		
-		self.translator = transClass()
-		self.langList = self.translator.langDict		
-
 		# ------------------------------------
 		#			 	HEADER
 		# ------------------------------------
@@ -71,18 +65,10 @@ class Window(QWidget):
 		for i in range(len(self.options)):
 			self.options_combo_box.addItem(self.options[i])
 		
-		self.options_language_box = QComboBox()
-		self.options_language_box.setStyleSheet("QComboBox { combobox-popup: 0; }");
-		for i in self.langList:
-			self.options_language_box.addItem(self.langList[i].title())
-			if(i == "en"):
-				self.options_language_box.setCurrentIndex(list(self.langList.keys()).index(i))
-
 		self.go_button = QPushButton("Go")
 		self.go_button.clicked.connect(self.go)
 
 		self.buttons_layout.addWidget(self.options_combo_box)
-		self.buttons_layout.addWidget(self.options_language_box)
 		self.buttons_layout.addWidget(self.go_button)
 
 		# ------------------------------------
@@ -130,26 +116,19 @@ class Window(QWidget):
 		self.setWindowTitle("Dyslexia Reader")
 		#self.setWindowIcon(QIcon("<IMAGE FILE PATH>")) # Custom window icon (next to window title)
 
-	def translate(self, text):
-		self.langCode = self.translator.langCodes[self.options_language_box.currentText().lower()]
-		if(self.langCode == "en"):
-			self.translator.transEN(text)
-		else:
-			self.translator.transChoose(text, self.langCode)
-
-		self.tesCode = self.translator.traTOtes(self.langCode)
-
 	@pyqtSlot()
 	def go(self):
-		self.translate(self.text_area.toPlainText())
-		self.dev_results.setText(self.translator.destText)
-
+		self.go_button.setDisabled(True)
+		text = self.text_area.toPlainText()
+		self.dev_results.setText(self.text_area.toPlainText())
+		voice = voice_engine()
+		voice.start(text)
+		del(voice)
+		self.go_button.setDisabled(False)
 
 	@pyqtSlot()
 	def dev_clear(self):
 		self.dev_results.setText("")
-		self.text_area.setText("")
-
 
 def main():
 	app = QApplication(sys.argv)

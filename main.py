@@ -27,7 +27,7 @@ def main():
 			x.report()
 			choice = '0'
 		elif choice == "3":
-			x.langCodes()
+			x.langCodesDisplay()
 			print("")
 			choice = '0'
 		elif choice == "4":

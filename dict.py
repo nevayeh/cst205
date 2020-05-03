@@ -85,3 +85,5 @@ class langTrans:
 			'uzb': 'uz',
 			'vie': 'vi'
 		}
+		self.rDict = dict(map(reversed, self.dict.items()))
+
