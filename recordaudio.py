@@ -17,11 +17,17 @@ def recordaudio():
         r.adjust_for_ambient_noise(source)
         #this line records
         audio = r.listen(source)
-
     """returns audio"""
-    #return audio
-    """returns audio changes to text"""
-    #return r.recognize_google(audio, """language of the recording""")
+    return audio
+
+def audioToText(audio):
+    r = sr.Recognizer()
+    """language of the recording passed in as a second parameter"""
+    return r.recognize_google(audio)
+
 
 #This is for testing, prints out the audio in text
-print(recordaudio())
+audio = recordaudio()
+print(audioToText(audio))
+    
+
