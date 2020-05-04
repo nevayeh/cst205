@@ -18,7 +18,6 @@ class transClass:
 		self.translator = Translator()	
 		#self.langDict = googletrans.LANGUAGES
 		self.langDict = langTrans().google_trans_languages
-		self.langDict = googletrans.LANGUAGES
 		self.langCodes = dict(map(reversed, self.langDict.items()))
 		self.langTrans = langTrans()	
 	

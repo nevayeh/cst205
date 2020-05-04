@@ -206,9 +206,4 @@ class langTrans:
 			'uzb': 'uz',
 			'vie': 'vi'
 		}
-<<<<<<< HEAD
 		"""
-=======
-		self.rDict = dict(map(reversed, self.dict.items()))
-
->>>>>>> fc06e060bb568ef6b1e67c3d542756bbfb60ad26
