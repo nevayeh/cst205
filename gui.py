@@ -26,9 +26,7 @@ class Window(QWidget):
 		self.dev_results_label_text = "Results:"
 		
 		self.translator = transClass()
-		self.langList = self.translator.langDict
-		self.langInput = ""
-		self.langCode = ""
+		self.langList = self.translator.langDict		
 
 		# ------------------------------------
 		#			 	HEADER
@@ -132,20 +130,19 @@ class Window(QWidget):
 		self.setWindowTitle("Dyslexia Reader")
 		#self.setWindowIcon(QIcon("<IMAGE FILE PATH>")) # Custom window icon (next to window title)
 
-	def translate(self):
-		self.langInput = self.options_language_box.currentText()
-		for langCode, langWord in self.langList.items():
-			if(langWord.title() == self.langInput):
-				self.langCode = langCode
-
+	def translate(self, text):
+		self.langCode = self.translator.langCodes[self.options_language_box.currentText().lower()]
 		if(self.langCode == "en"):
-			self.translator.transEN(self.text_area.toPlainText())
+			self.translator.transEN(text)
 		else:
-			self.translator.transChoose(self.text_area.toPlainText(), self.langCode)
+			self.translator.transChoose(text, self.langCode)
+
+		self.tesCode = self.translator.traTOtes(self.langCode)
 
 
 	@pyqtSlot()
 	def go(self):
+<<<<<<< HEAD
 		self.go_button.setDisabled(True)
 		#if text to speech is selected
 		if self.options_combo_box.currentText() == self.options[0]:
@@ -162,11 +159,17 @@ class Window(QWidget):
 			
 		
 		self.go_button.setDisabled(False)
+=======
+		self.translate(self.text_area.toPlainText())
+		self.dev_results.setText(self.translator.destText)
+>>>>>>> fc06e060bb568ef6b1e67c3d542756bbfb60ad26
 
 
 	@pyqtSlot()
 	def dev_clear(self):
 		self.dev_results.setText("")
+		self.text_area.setText("")
+
 
 def main():
 	app = QApplication(sys.argv)

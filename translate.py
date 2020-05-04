@@ -16,8 +16,13 @@ class transClass:
 
 	def __init__(self):
 		self.translator = Translator()	
+<<<<<<< HEAD
 		#self.langDict = googletrans.LANGUAGES
 		self.langDict = langTrans().google_trans_languages
+=======
+		self.langDict = googletrans.LANGUAGES
+		self.langCodes = dict(map(reversed, self.langDict.items()))
+>>>>>>> fc06e060bb568ef6b1e67c3d542756bbfb60ad26
 		self.langTrans = langTrans()	
 	
 		self.src = ""
@@ -69,7 +74,11 @@ class transClass:
 	
 	# Send language code across libraries
 	def tesTOtra(self, langDest):
-		self.langTrans.dict[langDest]
+		return self.langTrans.dict[langDest]
+
+	# Vice Versa
+	def traTOtes(self, langDest):
+		return self.langTrans.rDict[langDest]
 
 	# Output all data
 	def report(self):
@@ -83,7 +92,7 @@ class transClass:
 		print("Dest Pronunciation: " + self.howToD)
 	
 	# Helper function for all codes TODO Use for wheel
-	def langCodes(self):
+	def langCodesDisplay(self):
 		for i in self.langDict:
 			print(i + ": " + self.langDict[i].title())
 
