@@ -4,6 +4,28 @@ import os
 import pprint
 import speech_recognition as sr
 
+#function to convert text to speech 
+def speak(text, l):
+	tts = gTTS(text, lang=l)
+	filename = "temp.mp3"
+	tts.save(filename)
+	playsound.playsound(filename)
+	os.remove(filename)
+
+#function that picks up audio and converts speech to text
+def get_audio():
+	r = sr.Recognizer()
+	with sr.Microphone() as source:
+		audio = r.listen(source)
+		text = ""
+		try:
+			said = r.recognize_google(audio)
+			return said
+		except Exception as e:
+			print(str(e))
+
+
+"""
 language_dic = {
  'af': 'Afrikaans',
  'ar': 'Arabic',
@@ -85,23 +107,6 @@ language_dic = {
  'zh-tw': 'Chinese (Mandarin/Taiwan)'
  }
 
-def speak(text, l):
-	tts = gTTS(text, lang=l)
-	filename = "temp.mp3"
-	tts.save(filename)
-	playsound.playsound(filename)
-	os.remove(filename)
-
-def getLanguageDic():
+ def getLanguageDic():
 	return language_dic
-
-def get_audio():
-	r = sr.Recognizer()
-	with sr.Microphone() as source:
-		audio = r.listen(source)
-		text = ""
-		try:
-			said = r.recognize_google(audio)
-			return said
-		except Exception as e:
-			print(str(e))
+"""

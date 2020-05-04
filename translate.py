@@ -16,7 +16,8 @@ class transClass:
 
 	def __init__(self):
 		self.translator = Translator()	
-		self.langDict = googletrans.LANGUAGES
+		#self.langDict = googletrans.LANGUAGES
+		self.langDict = langTrans().google_trans_languages
 		self.langTrans = langTrans()	
 	
 		self.src = ""

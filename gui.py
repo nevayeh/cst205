@@ -7,7 +7,7 @@ from PyQt5.QtCore import pyqtSlot
 import sys
 
 from translate import transClass
-
+import voice_engine
 
 class Window(QWidget):
 	def __init__(self):
@@ -143,10 +143,25 @@ class Window(QWidget):
 		else:
 			self.translator.transChoose(self.text_area.toPlainText(), self.langCode)
 
+
 	@pyqtSlot()
 	def go(self):
-		self.translate()
-		self.dev_results.setText(self.translator.destText)
+		self.go_button.setDisabled(True)
+		#if text to speech is selected
+		if self.options_combo_box.currentText() == self.options[0]:
+			self.translate()
+			self.dev_results.setText(self.translator.destText)
+			text = self.translator.destText
+			lc = str(self.langCode)
+			voice_engine.speak(text, lc)
+
+		#if speech to text is selected
+		elif self.options_combo_box.currentText() == self.options[3]:
+			audio_to_text = voice_engine.get_audio()
+			self.text_area.setText(audio_to_text)
+			
+		
+		self.go_button.setDisabled(False)
 
 
 	@pyqtSlot()
