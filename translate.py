@@ -16,13 +16,10 @@ class transClass:
 
 	def __init__(self):
 		self.translator = Translator()	
-<<<<<<< HEAD
 		#self.langDict = googletrans.LANGUAGES
 		self.langDict = langTrans().google_trans_languages
-=======
 		self.langDict = googletrans.LANGUAGES
 		self.langCodes = dict(map(reversed, self.langDict.items()))
->>>>>>> fc06e060bb568ef6b1e67c3d542756bbfb60ad26
 		self.langTrans = langTrans()	
 	
 		self.src = ""

@@ -142,7 +142,6 @@ class Window(QWidget):
 
 	@pyqtSlot()
 	def go(self):
-<<<<<<< HEAD
 		self.go_button.setDisabled(True)
 		#if text to speech is selected
 		if self.options_combo_box.currentText() == self.options[0]:
@@ -158,13 +157,10 @@ class Window(QWidget):
 			self.text_area.setText(audio_to_text)
 			
 		
-		self.go_button.setDisabled(False)
-=======
 		self.translate(self.text_area.toPlainText())
 		self.dev_results.setText(self.translator.destText)
->>>>>>> fc06e060bb568ef6b1e67c3d542756bbfb60ad26
-
-
+		self.go_button.setDisabled(False)
+		
 	@pyqtSlot()
 	def dev_clear(self):
 		self.dev_results.setText("")
