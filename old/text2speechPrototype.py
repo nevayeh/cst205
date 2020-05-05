@@ -5,6 +5,7 @@ from PyQt5.QtCore import pyqtSlot
 #from PyQt5.QtGui import QPixmap, QIcon # not necessary (for now)
 #from PIL import Image #not necessary (for now)
 import sys
+import voice_engine
 from voice_engine import voice_engine
 
 class Window(QWidget):
@@ -119,6 +120,17 @@ class Window(QWidget):
 	@pyqtSlot()
 	def go(self):
 		self.go_button.setDisabled(True)
+		#if text to speech is selected
+		if self.options_combo_box.currentText() == self.options[0]:
+			text = self.text_area.toPlainText()
+			self.dev_results.setText(self.text_area.toPlainText())
+			voice_engine.speak(text, "en")
+
+		#if speech to text is selected
+		elif self.options_combo_box.currentText() == self.options[3]:
+			audio_to_text = voice_engine.get_audio()
+			self.text_area.setText(audio_to_text)
+			
 		text = self.text_area.toPlainText()
 		self.dev_results.setText(self.text_area.toPlainText())
 		voice = voice_engine()
