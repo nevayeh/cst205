@@ -21,6 +21,7 @@ class STT:
 		self.tts.save(self.filename)
 		playsound.playsound(self.filename)
 		os.remove(self.filename)
+		del(self.tts)
 
 	#function that picks up audio and converts speech to text
 	def stt(self):
