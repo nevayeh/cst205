@@ -1,38 +1,43 @@
 import pytesseract
 from PIL import Image
-from gtts import gTTS
-import os
 import pyttsx3
 
-class ITT:#passes in the name of the image
-    def __init__(self, name):
-        super().__init__()
-        self.name=name
+#from gtts import gTTS
 
-    def imageToText(self, lan):
-        #this line is to show the program where pytesseract is located
-        #it will be different depending on where you installed it
-        pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
+class ITT: 
+    def __init__(self):
+        super().__init__()
+
+        
+
+    def imageToText(self, name, lan):
         #opens image with pillow
-        img = Image.open(self.name)
+        self.img = Image.open(name)
         #we might also be able to pass in the image might make it easier
         #gets the text of the image that was passed in
-        text = pytesseract.image_to_string(img, lang = lan)
+        
+        self.text = pytesseract.image_to_string(self.img, lang = lan)
         #returns the text that was passed in
-        print(text)
-        return text
+        
+        return self.text
 
-    def toSpeech(self, text):
+    def toSpeech(self):
         #pass in the text which you'd like to be said
 
         #with this lines of code the computer then says what the text passed in is
         engine = pyttsx3.init()
         #you can set the speed of the voice here
         engine.setProperty('rate', 125)
-        engine.say(text)
+        engine.say(self.text)
         engine.runAndWait()
         engine.stop()
 
-n = ITT('image1.jpg')
+    def demo(self):
+        #x = ITT()
+        self.imageToText('image2.jpg', "eng")
+        self.toSpeech()
+        #self.toSpeech("What is up man")
 
-n.toSpeech("What is up man")
+x = ITT()
+#x.demo()
