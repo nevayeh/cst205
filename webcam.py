@@ -8,53 +8,30 @@ class webcam():
 
     def showWebcam(self):
         #shows new window with the webcam on
-        cv2.namedWindow("preview")
-        vc = cv2.VideoCapture(self.camera_port)
+        self.vc = cv2.VideoCapture(self.camera_port)
 
-        if vc.isOpened(): # try to get the first frame
-            rval, frame = vc.read()
+        if self.vc.isOpened(): # try to get the first frame
+            rval, frame = self.vc.read()
         else:
             rval = False
 
         while rval: # keeps the webcam on until ESC key is press
-            cv2.imshow("preview", frame)
-            rval, frame = vc.read()
+            cv2.imshow("Preview", frame)
+            rval, frame = self.vc.read()
+            self.ss = frame
             key = cv2.waitKey(20)
             # exit on ESC, we can change it to something else
             # something fitting to the gui
             if key == 27:  
                 break
-        vc.release()
-        #cv2.destroyAllWindows()
+        self.vc.release()
 
-    def screenshot(self):
-        #takes the screenshot
-        camera = cv2.VideoCapture(self.camera_port, cv2.CAP_DSHOW)
-        return_value, image = camera.read()
-        
+    def screenshot(self):        
         #saves the image
-        cv2.imwrite("image.png", image)
-        name = "image.png"
+        cv2.imwrite('temp.jpg', self.ss)
 
-        camera.release()
-        """
-        #shows the image the was taken in a new window
-        cv2.imshow('show', image)
-        cv2.waitKey(0)
-        """
+        # Stop camera use 
+        self.vc.release()
+
         #closes the cv2 windows
         cv2.destroyAllWindows()
-
-        #returns image, we could also return the name
-        return image
-
-
-#for testing
-webcam = webcam()
-
-webcam.showWebcam()
-
-img = webcam.screenshot()
-
-cv2.imshow("screenshot", img)
-cv2.waitKey(0)
