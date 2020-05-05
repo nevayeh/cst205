@@ -1,16 +1,18 @@
+
+# PqQt Widgets
 from PyQt5.QtWidgets import QApplication, QWidget, \
 	QVBoxLayout, QHBoxLayout, \
 	QTextEdit, QComboBox, QPushButton, QLabel, QMessageBox, QFrame, QFileDialog, QScrollArea
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, Qt
+# Important systems
 import sys
-
+import os
+import cv2
+# Our Classes <3
 from translate import transClass
 from webcam import webcam
 from imageToText import ITT
-import os
-import cv2
-
-
+from speechToText import STT
 
 class Window(QWidget):
 	def __init__(self):
@@ -22,17 +24,17 @@ class Window(QWidget):
 		
 		self.header_label_text = "Welcome!"
 		self.instructions_label_text = "Enter text below:"
-		self.options = ["Text To Speech", "Speech To Speech", "Text to Text", "Speech to Text"]
-		
-		self.title_label_text = "[TEMP] Developer Panel"
-		self.results_label_text = "Results:"
-		
-		self.img_intro_text = "Select An Image Option:"
 
+		self.options_in = ["Text", "Speech", "Image"]
+		self.options_out = ["Text", "Speech"]
+
+		self.title_label_text = "[TEMP] Developer Panel"
+		
 		self.translator = transClass()
 		self.langList = self.translator.langDict	
 
 		self.img = ITT()
+		self.speech = STT()
 
 		self.path = os.getcwd()
 
@@ -46,6 +48,7 @@ class Window(QWidget):
 		
 		self.header_label = QLabel()
 		self.header_label.setText(self.header_label_text)
+		self.header_label.setAlignment(Qt.AlignCenter)
 		
 		self.header_layout.addWidget(self.header_label)	
 		
@@ -75,7 +78,7 @@ class Window(QWidget):
 		self.img_input.setLayout(self.img_layout)
 
 		self.img_intro = QLabel()
-		self.img_intro.setText(self.img_intro_text)
+		self.img_intro.setText("Select An Image Option:")
 
 		self.wc_button = QPushButton("Open WebCam")
 		self.wc_button.clicked.connect(self.wc)
@@ -86,31 +89,74 @@ class Window(QWidget):
 		self.img_layout.addWidget(self.img_intro)
 		self.img_layout.addWidget(self.wc_button)
 		self.img_layout.addWidget(self.cp_button)
-		
+
 		# ------------------------------------
-		#			   BUTTONS
+		#			   AUDIO
 		# ------------------------------------
 
-		self.buttons = QFrame()
-		self.buttons_layout = QHBoxLayout()
-		self.buttons.setLayout(self.buttons_layout)
+		self.audio = QFrame()
+		self.audio_layout = QHBoxLayout()
+		self.audio.setLayout(self.audio_layout)
+
+		self.audio_intro = QLabel()
+		self.audio_intro.setText("Select An Audio Option:")
+
+		self.mr_button = QPushButton("Make Recording")
+		self.mr_button.clicked.connect(self.mr_S)
+
+		self.open_mp3_button = QPushButton("Open MP3")
+		self.open_mp3_button.clicked.connect(self.get_mp3)
+
+		self.audio_layout.addWidget(self.audio_intro)
+		self.audio_layout.addWidget(self.mr_button)
+		self.audio_layout.addWidget(self.open_mp3_button)
 		
-		self.options_combo_box = QComboBox()
-		for i in range(len(self.options)):
-			self.options_combo_box.addItem(self.options[i])
+		# ------------------------------------
+		#			   OPTIONS
+		# ------------------------------------
+
+		self.options = QFrame()
+		self.options_layout = QHBoxLayout()
+		self.options.setLayout(self.options_layout)
 		
+		self.options.src_label = QLabel()
+		self.options.src_label.setText("Source: ")
+		self.options_in_combo_box = QComboBox()
+		for i in range(len(self.options_in)):
+			self.options_in_combo_box.addItem(self.options_in[i])
+
+		self.options.dst_label = QLabel()
+		self.options.dst_label.setText("Destination: ")
+		self.options_out_combo_box = QComboBox()
+		for i in range(len(self.options_out)):
+			self.options_out_combo_box.addItem(self.options_out[i])
+		
+		self.options.lang = QLabel()
+		self.options.lang.setText("Language: ")
 		self.options_language_box = QComboBox()
 		self.options_language_box.setStyleSheet("QComboBox { combobox-popup: 0; }");
 		for i in self.langList:
 			self.options_language_box.addItem(self.langList[i].title())
 		self.options_language_box.setCurrentIndex(list(self.langList.keys()).index("en"))
-		
-		self.go_button = QPushButton("Go")
-		self.go_button.clicked.connect(self.go)
 
-		self.buttons_layout.addWidget(self.options_combo_box)
-		self.buttons_layout.addWidget(self.options_language_box)
-		self.buttons_layout.addWidget(self.go_button)
+		self.options_layout.addWidget(self.options.src_label)
+		self.options_layout.addWidget(self.options_in_combo_box)
+		self.options_layout.addWidget(self.options.dst_label)
+		self.options_layout.addWidget(self.options_out_combo_box)
+		self.options_layout.addWidget(self.options.lang)
+		self.options_layout.addWidget(self.options_language_box)
+
+		# ------------------------------------
+		#			GO 
+		# ------------------------------------
+		
+		self.go = QFrame()
+		self.go_layout = QHBoxLayout()
+		self.go.setLayout(self.go_layout)
+
+		self.go_button = QPushButton("Go ! ! !")
+		self.go_button.clicked.connect(self.goEXE)
+		self.go_layout.addWidget(self.go_button)
 
 		# ------------------------------------
 		#			RESULTS 
@@ -118,6 +164,7 @@ class Window(QWidget):
 		
 		self.text_result = ""
 		self.img_result = ""
+		self.audio_result = ""
 		self.returnResults = ""
 
 		# ------------------------------------
@@ -139,7 +186,7 @@ class Window(QWidget):
 		self.details_scroll_layout.addWidget(self.details_scroll)
 
 		# ------------------------------------
-		#			  Results
+		#			  RESULTS
 		# ------------------------------------
 		
 		self.results = QFrame()
@@ -150,7 +197,7 @@ class Window(QWidget):
 		#self.title_label.setText(self.title_label_text)
 		
 		self.results_label = QLabel()
-		self.results_label.setText(self.results_label_text)
+		self.results_label.setText("Results:")
 		
 		self.results_product = QLabel() #where results go (for now)
 		
@@ -172,17 +219,17 @@ class Window(QWidget):
 		self.container.addWidget(self.header)		
 		self.container.addWidget(self.textbox)
 		self.container.addWidget(self.img_input)
-		self.container.addWidget(self.buttons)
+		self.container.addWidget(self.audio)
+		self.container.addWidget(self.options)	
+		self.container.addWidget(self.go)
 		self.container.addWidget(self.results)
 		self.container.addWidget(self.details)
 		
 		self.setLayout(self.container)
-		self.setWindowTitle("Dyslexia Reader")
-		#self.setWindowIcon(QIcon("<IMAGE FILE PATH>")) # Custom window icon (next to window title)
-
+		self.setWindowTitle("Enuncreate")
 
 	# ------------------------------------
-	#	  Helper Functions
+	#	  HELPER FUNCTIONS
 	# ------------------------------------
 	
 	# Main translator function	
@@ -199,37 +246,17 @@ class Window(QWidget):
 			self.img_result = "Couldn't Parse Text"
 
 	# ------------------------------------
-	#	  Button Functions
+	#	  BUTTON FUNCTIONS
 	# ------------------------------------
 
 	@pyqtSlot()
-	def go(self):
-		self.text_result = self.text_area.toPlainText()
-		if(self.text_result != ""):
-			self.translate(self.text_result)
-			self.resultsText = self.translator.destText
-		elif(self.img_result != ""):
-			self.translate(self.img_result)
-			self.resultsText = self.translator.destText
-		else:
-			self.resultsText = "No Text Entered!!!"
+	def get_mp3(self):
+		self.dialog = QFileDialog()
+		self.mp3_dir = self.dialog.getOpenFileName(self, "File", self.path, "Image files (*.mp3)")[0]
 
-		self.results_product.setText(self.resultsText)
-
-	# Clear all results
 	@pyqtSlot()
-	def clear(self):
-		self.results_product.setText("")
-		self.text_area.setText("")
-		self.details_label.setText("")
-		self.translateDetails = ""
-		self.detailedResults = ""
-		self.returnResults = ""
-		self.img_result = ""
-		self.text_result = ""
-		self.details_button.setChecked(False)
-		self.options_language_box.setCurrentIndex(list(self.langList.keys()).index("en"))
-		cv2.destroyAllWindows()
+	def mr_S(self):
+		self.audio_result = self.speech.stt()
 
 	# Using webcam, takes temp picture, parses best it can, deletes temp pic
 	@pyqtSlot()
@@ -249,7 +276,51 @@ class Window(QWidget):
 		self.img_dir = self.dialog.getOpenFileName(self, "File", self.path, "Image files (*.jpg *.png)")[0]
 		self.img_result = self.img.imageToText(self.img_dir, "eng")
 		self.parseError(self.img_result)
+	
+	@pyqtSlot()
+	def goEXE(self):
+		self.text_result = self.text_area.toPlainText()
+		if(self.text_result != "" and self.options_in_combo_box.currentText() == self.options_in[0]):
+			self.translate(self.text_result)
+		elif(self.audio_result != "" and self.options_in_combo_box.currentText() == self.options_in[1]):
+			self.translate(self.audio_result)
+		elif(self.img_result != "" and self.options_in_combo_box.currentText() == self.options_in[2]):
+			self.translate(self.img_result)
+	
+		if(self.translator == None):
+			self.resultsText = "No Text Entered!!!"
+		else:
+			self.resultsText = self.translator.destText
 
+		# Text
+		if self.options_out_combo_box.currentText() == self.options_out[0]:
+			self.speech.stt()
+		# Speech
+		elif self.options_out_combo_box.currentText() == self.options_out[1]:
+			self.speech.tts(self.resultsText, "en")
+		
+		self.results_product.setText(self.resultsText)
+
+	# Clear all results
+	@pyqtSlot()
+	def clear(self):
+		self.results_product.setText("")
+		self.text_area.setText("")
+		self.details_label.setText("")
+		self.translateDetails = ""
+		self.detailedResults = ""
+		self.returnResults = ""
+		self.img_result = ""
+		self.text_result = ""
+		self.audio_result = ""
+		self.details_button.setChecked(False)
+		self.options_in_combo_box.setCurrentIndex(0)
+		self.options_out_combo_box.setCurrentIndex(0)
+		self.options_language_box.setCurrentIndex(list(self.langList.keys()).index("en"))
+
+		cv2.destroyAllWindows()
+
+	# Detail Window	
 	@pyqtSlot()
 	def displayDetails(self):
 		# Do we want to show details?
@@ -258,7 +329,7 @@ class Window(QWidget):
 				# Parsed text
 				self.detailedResults = (
 					"[Text Data]\n" +	
-					"-Texbox: " + self.text_result + "\n\n"
+					"-Textbox: " + self.text_result + "\n\n"
 				)
 			elif(self.img_result != ""):
 				# Parsed an image
@@ -291,12 +362,3 @@ class Window(QWidget):
 		else:
 			self.details_label.hide()
 
-	
-def main():
-	app = QApplication(sys.argv)
-	gui = Window()
-	gui.show()
-	sys.exit(app.exec_())
-
-if __name__ == "__main__":
-	main()

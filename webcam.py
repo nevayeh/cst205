@@ -8,7 +8,6 @@ class webcam():
 
     def showWebcam(self):
         #shows new window with the webcam on
-      #  cv2.namedWindow("Preview")
         self.vc = cv2.VideoCapture(self.camera_port)
 
         if self.vc.isOpened(): # try to get the first frame
@@ -31,6 +30,7 @@ class webcam():
         #saves the image
         cv2.imwrite('temp.jpg', self.ss)
 
+        # Stop camera use 
         self.vc.release()
 
         #closes the cv2 windows
