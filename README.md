@@ -2,22 +2,23 @@
 
 #### Created by
 
-###### Diana Sanders - iTransCode (Github)
-###### Neva Yeh - nevayeh (Github)
-###### Rodrigo Andrade - randrade8311 (Github)
-###### Syn Kae Ng - synkae (Github)
+Diana Sanders - iTransCode (Github)
+Neva Yeh - nevayeh (Github)
+Rodrigo Andrade - randrade8311 (Github)
+Syn Kae Ng - synkae (Github)
 
 ## Table of Contents
 1. [Overview](#Overview)
-1. [Product Spec](#Product-Spec)
-1. [Wireframes](#Wireframes)
-2. [Design/Developement](#Design/Developement)
+2. [Product Spec](#Product-Spec)
+3. [Libraries](#Libraries)
+4. [Demo](#Demo)
 
 ## Overview
 
 ### Description
 
 To help people with dyslexia to have an easier time reading. The users will upload an image to the app which will convert the image to text and then to speech. There will be a GUI where the user uploads an image and the app will grab the text from the image and convert it to speech. The user can also select the speech’s language. User will be able to enter text to be read aloud / translated or they can submit a picture.
+
 
 ## Product Spec
 
@@ -53,10 +54,15 @@ To help people with dyslexia to have an easier time reading. The users will uplo
     * Will translate to other available languages
 
 
-## Design/Developement
+## Libraries
 
-![Planning out](planning.png) 
+* googletrans (Google Translate)
+* gTTS - (Google Text To Speech)
+* pytesseract 
+* playsound 
+* SpeechRecognition 
+* Pyaudio 
+* OpenCV
 
-![Prototype](prototype1.png)
+## Demo
 
-![Prototype](prototype2.png)
