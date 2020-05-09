@@ -2,7 +2,7 @@
 
 #### Created by
 
-* Diana Sanders - iTransCode (Github)
+* Diana Danvers - iTransCode (Github)
 * Neva Yeh - nevayeh (Github)
 * Rodrigo Andrade - randrade8311 (Github)
 * Syn Kae Ng - synkae (Github)
@@ -11,13 +11,13 @@
 1. [Overview](#Overview)
 2. [Product Spec](#Product-Spec)
 3. [Libraries](#Libraries)
-4. [Demo](#Demo)
+4. [Use](#Use)
 
 ## Overview
 
 ### Description
 
-To help people with dyslexia to have an easier time reading. The users will upload an image to the app which will convert the image to text and then to speech. There will be a GUI where the user uploads an image and the app will grab the text from the image and convert it to speech. The user can also select the speech’s language. User will be able to enter text to be read aloud / translated or they can submit a picture.
+Our goal was to help people with dyslexia by creating a reading aid tool. The user can upload a source, such as a text input, an image, or audio file to the app which will convert the source to a desired format of either text or audio. Text is inputted in a simple textbox while image and audio files may be selected from a desired folder or recorded live! Choose the “Use Webcam” option to take a picture on your device’s camera or “Record Mp3” to make your own audio file. The GUI prompts the user to input a source file and defaults to parsing the source to English, however, a handy dictionary is available for the user to translate their source into a different language. Once the source data and destination format is selected, press “Go!” and watch the magic happen. Prying eyes can use the “Detail” button to see all the info our program is working with. Be sure to clear out your results when you’re done! Enjoy!
 
 
 ## Product Spec
@@ -64,5 +64,8 @@ To help people with dyslexia to have an easier time reading. The users will uplo
 * Pyaudio 
 * OpenCV
 
-## Demo
 
+## Use
+
+* To use run: $ python3 main.py
+* Demo Video: 
