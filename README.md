@@ -4,7 +4,7 @@
 
 * Diana Danvers - iTransCode [Github](https://github.com/iTransCode)
 * Neva Yeh - nevayeh [Github](https://github.com/nevayeh)
-* Rodrigo Andrade - [randrade8311 Github](https://github.com/randrade8311)
+* Rodrigo Andrade - randrade8311 [Github](https://github.com/randrade8311)
 * Syn Kae Ng - synkae [Github](https://github.com/synkae)
 
 ## Table of Contents
