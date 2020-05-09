@@ -2,7 +2,7 @@
 
 #### Created by
 
-* Diana Danvers - iTransCode (Github)
+* Diana Danvers - iTransCode [Github](https://github.com/iTransCode)
 * Neva Yeh - nevayeh (Github)
 * Rodrigo Andrade - randrade8311 (Github)
 * Syn Kae Ng - synkae (Github)
