@@ -2,10 +2,10 @@
 
 #### Created by
 
-Diana Sanders - iTransCode (Github)
-Neva Yeh - nevayeh (Github)
-Rodrigo Andrade - randrade8311 (Github)
-Syn Kae Ng - synkae (Github)
+* Diana Sanders - iTransCode (Github)
+* Neva Yeh - nevayeh (Github)
+* Rodrigo Andrade - randrade8311 (Github)
+* Syn Kae Ng - synkae (Github)
 
 ## Table of Contents
 1. [Overview](#Overview)
