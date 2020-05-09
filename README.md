@@ -3,9 +3,9 @@
 #### Created by
 
 * Diana Danvers - iTransCode [Github](https://github.com/iTransCode)
-* Neva Yeh - nevayeh (Github)
-* Rodrigo Andrade - randrade8311 (Github)
-* Syn Kae Ng - synkae (Github)
+* Neva Yeh - nevayeh [Github](https://github.com/nevayeh)
+* Rodrigo Andrade - randrade8311 [Github](https://github.com/randrade8311)
+* Syn Kae Ng - synkae [Github](https://github.com/synkae)
 
 ## Table of Contents
 1. [Overview](#Overview)
