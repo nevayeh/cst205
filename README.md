@@ -19,7 +19,6 @@
 
 To help people with dyslexia to have an easier time reading. The users will upload an image to the app which will convert the image to text and then to speech. There will be a GUI where the user uploads an image and the app will grab the text from the image and convert it to speech. The user can also select the speech’s language. User will be able to enter text to be read aloud / translated or they can submit a picture.
 
-
 ## Product Spec
 
 ### 1. User Stories (Required and Optional)
@@ -56,6 +55,8 @@ To help people with dyslexia to have an easier time reading. The users will uplo
 
 ## Design/Developement
 
-![Planning out](planning.png)
+![Planning out](planning.png) 
+
 ![Prototype](prototype1.png)
+
 ![Prototype](prototype2.png)
