@@ -105,6 +105,8 @@ class Window(QWidget):
 		self.audio_intro.setText("Select An Audio Option:")
 
 		self.mr_button = QPushButton("Make Recording")
+		self.record_box = QMessageBox()
+		self.record_box.setText("Recording now!")
 		self.mr_button.clicked.connect(self.mr_S)
 
 		self.open_mp3_button = QPushButton("Open MP3")
@@ -280,6 +282,7 @@ class Window(QWidget):
 
 	@pyqtSlot()
 	def mr_S(self):
+		self.record_box.show()
 		self.audio_result = self.speech.stt()
 		self.mp3_dir = self.path
 		self.parseError(self.audio_result, "a")
