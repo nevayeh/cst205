@@ -18,20 +18,26 @@ class webcam():
         while rval: # keeps the webcam on until ESC key is press
             cv2.imshow("Preview", frame)
             rval, frame = self.vc.read()
-            self.ss = frame
-            key = cv2.waitKey(20)
+            self.key = cv2.waitKey(20)
             # exit on ESC, we can change it to something else
             # something fitting to the gui
-            if key == 27:  
+            if self.key == 32:
+                self.ss = frame
+                break;
+
+            if self.key == 27: 
+                self.ss = "" 
                 break
         self.vc.release()
 
-    def screenshot(self):        
-        #saves the image
-        cv2.imwrite('temp.jpg', self.ss)
-
-        # Stop camera use 
-        self.vc.release()
-
+    def screenshot(self):    
         #closes the cv2 windows
-        cv2.destroyAllWindows()
+        cv2.destroyAllWindows()    
+        
+        if(self.key == 32):
+           #saves the image
+            cv2.imwrite('temp.jpg', self.ss)
+            return True
+        elif(self.key == 27):
+              # No Image
+            return False

@@ -31,6 +31,15 @@ class STT:
 			self.stt_results = ""
 		return self.stt_go()
 
+	# Data from given audio file
+	def ftt(self, audioFilePath):
+		self.r = sr.Recognizer()
+		audioFile = sr.AudioFile(audioFilePath)
+		with audioFile as source:
+			self.audio = self.r.listen(source)
+			self.stt_results = ""
+		return self.stt_go()
+
 	# Translate speach into text
 	def stt_go(self):
 		try:

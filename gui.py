@@ -8,6 +8,7 @@ from PyQt5.QtCore import pyqtSlot, Qt
 import sys
 import os
 import cv2
+import time
 # Our Classes <3
 from translate import transClass
 from webcam import webcam
@@ -84,9 +85,23 @@ class Window(QWidget):
 		self.img_intro.setText("Select An Image Option:")
 
 		self.wc_button = QPushButton("Open WebCam")
-		self.wc_button.clicked.connect(self.wc)
+		self.wc_button.text = "Open WebCam"
+		self.wc_button.setText(self.wc_button.text)
 
-		self.cp_button = QPushButton("Choose Picture")
+		self.image_box = QMessageBox()
+		self.image_box.setText("Welcome to the Image Studio\n")
+		self.image_box.setInformativeText("Press the Spacebar to snap a picture\n")
+
+		self.image_box.recBut = QPushButton("Ok")
+		self.image_box.recBut.clicked.connect(self.wc)
+		self.image_box.addButton(self.image_box.recBut, QMessageBox.ActionRole)
+		self.image_box.recordCancel = self.image_box.addButton(QMessageBox.Cancel)
+		self.image_box.setDefaultButton(self.image_box.recBut) 
+		self.wc_button.clicked.connect(self.record_image)
+
+		self.cp_button = QPushButton()
+		self.cp_button.text = "Choose Picture"
+		self.cp_button.setText(self.cp_button.text)
 		self.cp_button.clicked.connect(self.cp)
 
 		self.img_layout.addWidget(self.img_intro)
@@ -104,12 +119,24 @@ class Window(QWidget):
 		self.audio_intro = QLabel()
 		self.audio_intro.setText("Select An Audio Option:")
 
-		self.mr_button = QPushButton("Make Recording")
-		self.record_box = QMessageBox()
-		self.record_box.setText("Recording now!")
-		self.mr_button.clicked.connect(self.mr_S)
+		self.mr_button = QPushButton()
+		self.mr_button.text = "Make Recording"
+		self.mr_button.setText(self.mr_button.text)
 
-		self.open_mp3_button = QPushButton("Open MP3")
+		self.audio_box = QMessageBox()
+		self.audio_box.setText("Welcome to the Audio Studio\n")
+		self.audio_box.setInformativeText("Press Record to start\n")
+
+		self.audio_box.recBut = QPushButton("Record")
+		self.audio_box.recBut.clicked.connect(self.mr_S)
+		self.audio_box.addButton(self.audio_box.recBut, QMessageBox.ActionRole)
+		self.audio_box.recordCancel = self.audio_box.addButton(QMessageBox.Cancel)
+		self.audio_box.setDefaultButton(self.audio_box.recBut) 
+		self.mr_button.clicked.connect(self.record_audio)
+
+		self.open_mp3_button = QPushButton()
+		self.open_mp3_button.text = "Choose Audio File"
+		self.open_mp3_button.setText(self.open_mp3_button.text)
 		self.open_mp3_button.clicked.connect(self.get_mp3)
 
 		self.audio_layout.addWidget(self.audio_intro)
@@ -207,6 +234,8 @@ class Window(QWidget):
 		self.results_label.setText("Results:")
 		
 		self.results_product = QLabel() #where results go (for now)
+		self.results_product.setTextInteractionFlags(Qt.TextSelectableByMouse)
+
 		
 		self.clear_button = QPushButton("Clear Results")
 		self.clear_button.clicked.connect(self.clear)
@@ -274,52 +303,87 @@ class Window(QWidget):
 	#	  BUTTON FUNCTIONS
 	# ------------------------------------
 
-	@pyqtSlot()
-	def get_mp3(self):
-		self.dialog = QFileDialog()
-		self.mp3_dir = self.dialog.getOpenFileName(self, "File", self.path, "Image files (*.mp3)")[0]
-		self.options_in_combo_box.setCurrentIndex(1)
+	## IMAGE ##
 
-	@pyqtSlot()
-	def mr_S(self):
-		self.record_box.show()
-		self.audio_result = self.speech.stt()
-		self.mp3_dir = self.path
-		self.parseError(self.audio_result, "a")
-		self.options_in_combo_box.setCurrentIndex(1)
-
-	# Using webcam, takes temp picture, parses best it can, deletes temp pic
-	def wc(self):
-		self.webcam = webcam()
-		self.webcam.showWebcam()
-		self.webcam.screenshot()
-		
-		# Temp picture made in local directory TODO: FIX HARDCODED LANGUAGE
-		self.img_dir = self.path + "/" + "temp.jpg"
-		self.img_result = self.img.imageToText(self.img_dir, "eng")
-		self.parseError(self.img_result, "i")
-		os.remove("temp.jpg")
-		self.options_in_combo_box.setCurrentIndex(2)
-
-	# User choose an image, opens window finder
+	# Choose Picture - User choose an image, opens window finder
 	@pyqtSlot()
 	def cp(self):
 		self.dialog = QFileDialog()
 		self.img_dir = self.dialog.getOpenFileName(self, "File", self.path, "Image files (*.jpg *.png *.jpeg)")[0]
 
-		# Chosen picture is parsed TODO: FIX HARDCODED LANGUAGE
-		self.img_result = self.img.imageToText(self.img_dir, "eng")
-		self.parseError(self.img_result, "i")
-		self.options_in_combo_box.setCurrentIndex(2)
+		if(self.img_dir != ""):
+			# Chosen picture is parsed 
+			self.img_result = self.img.imageToText(self.img_dir, "eng")
+			self.parseError(self.img_result, "i")
+			self.options_in_combo_box.setCurrentIndex(2)
+		else:
+			self.img_result = ""
 
+		if(self.img_result != ""):
+			self.cp_button.setText("Image File Selected!")
+
+
+	# Recording Box - Images: Prompts the user to take a picture		
+	@pyqtSlot()
+	def record_image(self):
+		self.image_box.exec_()
+		if(self.image_box.clickedButton() == self.image_box.recordCancel):
+			self.wc_button.setText(self.wc_button.text)
+		elif(self.image_box.clickedButton() == self.image_box.recBut and self.img_result != ""):
+			self.wc_button.setText("Took a Picture!")
+
+	# WebCam - Using webcam, takes temp picture, parses best it can, deletes temp pic
+	def wc(self):
+		self.webcam = webcam()
+		self.webcam.showWebcam()
+		if(self.webcam.screenshot()):	
+			# Temp picture made in local directory
+			self.img_dir = self.path + "/" + "temp.jpg"
+			self.img_result = self.img.imageToText(self.img_dir, "eng")
+			self.parseError(self.img_result, "i")
+			os.remove("temp.jpg")
+			self.options_in_combo_box.setCurrentIndex(2)
+		else: 
+			self.img_result = ""
+
+	## AUDIO ##
+
+	# Make Recording - Speech
+	@pyqtSlot()
+	def mr_S(self):
+		self.audio_result = self.speech.stt()
+		self.mp3_dir = self.path
+		self.parseError(self.audio_result, "a")
+		self.options_in_combo_box.setCurrentIndex(1)
 	
+	# Recording Box - Audio: Prompts the user to record an audio message		
+	@pyqtSlot()
+	def record_audio(self):
+		self.audio_box.exec_()
+		if(self.audio_box.clickedButton() == self.audio_box.recordCancel):
+			self.mr_button.setText(self.mr_button.text)
+		elif(self.audio_box.clickedButton() == self.audio_box.recBut):
+			self.mr_button.setText("Made Recording!")
+
+	# Select an Audio File
+	@pyqtSlot()
+	def get_mp3(self):
+		self.dialog = QFileDialog()
+		self.mp3_dir = self.dialog.getOpenFileName(self, "File", self.path, "Audio files (*.mp3 *.wav)")[0]
+		self.audio_result = self.speech.ftt(self.mp3_dir)
+		self.options_in_combo_box.setCurrentIndex(1)
+
+		if(self.audio_result != ""):
+			self.open_mp3_button.setText("Audio File Selected!")
+
+	# Main Functionaility - Makes the translation
 	@pyqtSlot()
 	def goEXE(self):
 
 		# Text conversion
 		self.text_result = self.text_area.toPlainText()
 
-		# Inputs
+		## Inputs##
 		# Text Input
 		if(self.options_in_combo_box.currentText() == self.options_in[0]):
 			if(self.text_result == ""):
@@ -348,7 +412,7 @@ class Window(QWidget):
 		else:
 			self.resultsText = self.translator.destText
 
-		# Outputs
+		## Outputs ##
 		# Text Output
 		if(self.options_out_combo_box.currentText() == self.options_out[0] and not self.critError):
 			self.speech.stt()
@@ -369,6 +433,10 @@ class Window(QWidget):
 		self.results_product.setText("")
 		self.text_area.setText("")
 		self.details_label.setText("")
+		self.wc_button.setText(self.wc_button.text)
+		self.mr_button.setText(self.mr_button.text)
+		self.open_mp3_button.setText(self.open_mp3_button.text)
+		self.cp_button.setText(self.cp_button.text)
 
 		#Reset widgets
 		self.options_in_combo_box.setCurrentIndex(0)
