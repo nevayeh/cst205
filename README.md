@@ -68,4 +68,4 @@ Our goal was to help people with dyslexia by creating a reading aid tool. The us
 ## Use
 
 * To use run: $ python3 main.py
-* Demo Video: [Link](https://youtu.be/QxqlyT2iNQI)
+* Demo Video: [Link](https://youtu.be/sPEC8WIBXzs)
